@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ish-movie-ticket-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ish-movie-ticket
+  template:
+    metadata:
+      labels:
+        app: ish-movie-ticket
+    spec:
+      containers:
+      - name: ish-movie-ticket-container
+        image: bhavanishwarya/ish-movie-ticket-booking:1.0
+        ports:
+        - containerPort: 80
