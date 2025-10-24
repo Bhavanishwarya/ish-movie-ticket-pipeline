@@ -1,9 +1,10 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'ish-movie-ticket-booking:1.0'
+        DOCKER_IMAGE = 'bhavanishwarya/ish-movie-ticket-booking:1.0'
     }
     stages {
+
         stage('Checkout Code') {
             steps {
                 git url: 'https://github.com/Bhavanishwarya/ish-movie-ticket-pipeline.git', branch: 'main'
