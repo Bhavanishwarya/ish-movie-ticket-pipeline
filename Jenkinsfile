@@ -1,8 +1,10 @@
 pipeline {
     agent any
+
     environment {
-        DOCKER_IMAGE = 'bhavanishwarya/ish-movie-ticket-booking:1.0'
+        DOCKER_IMAGE = 'ish-movie-ticket-booking:1.0'
     }
+
     stages {
 
         stage('Checkout Code') {
@@ -33,8 +35,17 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                bat "kubectl apply -f ish-movie-ticket-deployment.yaml"
-                bat "kubectl apply -f ish-movie-ticket-service.yaml"
+                // Use kubeconfig credentials stored in Jenkins
+                withCredentials([file(credentialsId: 'kubeconfig-docker-desktop', variable: 'KUBECONFIG_FILE')]) {
+                    bat """
+                        echo Deploying application to Kubernetes...
+                        set KUBECONFIG=%KUBECONFIG_FILE%
+                        kubectl config get-contexts
+                        kubectl apply -f ish-movie-ticket-deployment.yaml --validate=false
+                        kubectl apply -f ish-movie-ticket-service.yaml --validate=false
+                        kubectl get pods
+                    """
+                }
             }
         }
     }
