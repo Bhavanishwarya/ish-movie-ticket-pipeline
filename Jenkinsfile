@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'ish-movie-ticket-booking:1.0'
+        DOCKER_IMAGE = 'bhavanishwarya/ish-movie-ticket-booking:1.0'
     }
 
     stages {
 
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/Bhavanishwarya/ish-movie-ticket-pipeline.git', branch: 'main'
+                git branch: 'main', url: 'https://github.com/Bhavanishwarya/ish-movie-ticket-pipeline.git'
             }
         }
 
@@ -21,7 +21,9 @@ pipeline {
 
         stage('Docker Login') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials',
+                                                  usernameVariable: 'DOCKER_USER',
+                                                  passwordVariable: 'DOCKER_PASS')]) {
                     bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                 }
             }
@@ -35,18 +37,27 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                // Use kubeconfig credentials stored in Jenkins
-                withCredentials([file(credentialsId: 'kubeconfig-docker-desktop', variable: 'KUBECONFIG_FILE')]) {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     bat """
                         echo Deploying application to Kubernetes...
                         set KUBECONFIG=%KUBECONFIG_FILE%
-                        kubectl config get-contexts
+                        kubectl get nodes
                         kubectl apply -f ish-movie-ticket-deployment.yaml --validate=false
                         kubectl apply -f ish-movie-ticket-service.yaml --validate=false
+                        echo Deployment complete.
                         kubectl get pods
                     """
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline completed successfully! Application deployed to Kubernetes.'
+        }
+        failure {
+            echo '❌ Pipeline failed. Please check the logs above for details.'
         }
     }
 }
