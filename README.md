@@ -50,7 +50,6 @@ feature/* → Feature-specific branches
 
 Pushed the code to GitHub regularly.
 
-📸 Screenshot:
 ![Git Repository Setup](images/Screenshot%202025-10-23%20210239.png)
 
 🔹 Step 2: Containerization (Docker)
@@ -61,7 +60,6 @@ Built and tested the Docker image locally.
 
 Verified successful build and container execution.
 
-📸 Screenshot:
 ![Docker Build Process](images/Screenshot%202025-10-23%20210735.png)
 
 🔹 Step 3: Continuous Integration & Delivery (Jenkins)
@@ -80,7 +78,6 @@ Integrated Jenkins with GitHub webhooks to trigger builds automatically.
 
 Verified successful pipeline execution in Jenkins console.
 
-📸 Screenshots:
 ![Jenkins Build](images/Screenshot%202025-10-23%20210957.png)
 ![Jenkins Success](images/Screenshot%202025-10-23%20211620.png)
 
@@ -94,7 +91,6 @@ Verified running pods and services via kubectl get all.
 
 Scaled application replicas to handle more load.
 
-📸 Screenshots:
 ![Kubernetes Deployment](images/WhatsApp%20Image%202025-10-25%20at%2012.41.36_cc18810b.jpg)
 ![Application Running](images/WhatsApp%20Image%202025-10-25%20at%2012.41.37_b82008c7.jpg)
 
